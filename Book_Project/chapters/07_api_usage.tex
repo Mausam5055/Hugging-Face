@@ -1,0 +1,81 @@
+\chapter{Using Hugging Face via API}
+
+Sometimes, you don't want to download a huge model locally. Maybe your laptop doesn't have a GPU, or you just want to test something quickly. This is where the **Inference API** comes in.
+
+\section{What is an API?}
+\begin{definitionbox}{API (Application Programming Interface)}
+Think of an API as a waiter in a restaurant. You (the code) ask the waiter (API) for a specific dish (prediction). The waiter goes to the kitchen (server), gets the dish, and brings it back. You don't need to know how to cook (run the model).
+\end{definitionbox}
+
+\section{Local vs. API}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Local (Pipeline)} & \textbf{API (Serverless)} \\ \hline
+Running on YOUR computer & Running on Hugging Face servers \\ \hline
+Needs RAM/GPU & No hardware required \\ \hline
+Works offline & Requires internet \\ \hline
+Free & Free (with rate limits) or Paid \\ \hline
+\end{tabular}
+\end{center}
+
+\section{Quick Setup: Getting a Token}
+To use the API, you identify yourself using a "Token" (like a password).
+\begin{enumerate}
+    \item Go to \url{https://huggingface.co/settings/tokens}
+    \item Click "New token".
+    \item Give it a name (e.g., "Book Project") and select "Read" role.
+    \item Copy the string starting with \texttt{hf\_...}.
+\end{enumerate}
+
+\section{Using the Inference API (Python)}
+Below is a standard function to call ANY model on the Hub.
+
+\begin{lstlisting}[language=Python, caption=Universal API Function]
+import requests
+
+API_URL = "https://api-inference.huggingface.co/models/google-bert/bert-base-uncased"
+headers = {"Authorization": "Bearer hf_xxxxxxxxxxxxxxxxxxxxxxxx"}
+
+def query(payload):
+    response = requests.post(API_URL, headers=headers, json=payload)
+    return response.json()
+
+output = query({
+    "inputs": "The quick brown fox jumps over the lazy dog.",
+})
+print(output)
+\end{lstlisting}
+
+\section{Advanced Examples}
+The API isn't just for text! You can use it for images too.
+
+\subsection{Text Generation (GPT-2)}
+\begin{lstlisting}[language=Python]
+API_URL = "https://api-inference.huggingface.co/models/gpt2"
+# Payload parameters allow you to control creativity
+data = query({
+    "inputs": "Once upon a time,", 
+    "parameters": {"max_new_tokens": 50, "temperature": 0.7}
+})
+\end{lstlisting}
+
+\subsection{Image Captioning}
+\begin{lstlisting}[language=Python]
+API_URL = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-base"
+# You would send raw image bytes here
+with open("cat.jpg", "rb") as f:
+    data = f.read()
+response = requests.post(API_URL, headers=headers, data=data)
+\end{lstlisting}
+
+\section{Common Errors \& Troubleshooting}
+\begin{itemize}
+    \item \textbf{503 Service Unavailable:} The model is "cold" (loading into memory). Wait 10 seconds and try again.
+    \item \textbf{401 Unauthorized:} Your token is wrong. Check if you copied it correctly.
+    \item \textbf{400 Bad Request:} Your input format is wrong (e.g., sending text to an image model).
+\end{itemize}
+
+\begin{tipbox}
+The "Serverless" Inference API is free but rate-limited. If you need to hit it 100 times a second for a real App, you should upgrade to "Inference Endpoints" which gives you a dedicated GPU.
+\end{tipbox}

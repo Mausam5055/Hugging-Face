@@ -1,0 +1,56 @@
+\chapter{Common Mistakes \& Best Practices}
+
+Even experienced developers make mistakes when switching to modern NLP. Here is a curated list of pitfalls and how to avoid them.
+
+\section{1. The "CPU vs. GPU" Trap}
+\begin{warningbox}
+Do NOT try to run large models (like Llama-2-70b or Falcon-40b) on a standard laptop CPU. It will either crash your RAM or take minutes to generate a single word.
+\end{warningbox}
+\textbf{The Reality:} Deep Learning is matrix multiplication heavy. GPUs are designed for this; CPUs are not.
+\\ \textbf{Solution:} 
+\begin{itemize}
+    \item Start with smaller models (\texttt{distilbert}, \texttt{t5-small}) for local development.
+    \item Use Google Colab (free T4 GPU) or Kaggle Kernels.
+    \item Use \texttt{device="cuda"} or \texttt{device="mps"} (Mac) in your pipeline.
+\end{itemize}
+
+\section{2. Ignoring Model Size vs. Performance}
+Bigger is not always better. A massive model might give 99\% accuracy, but a tiny model might give 98\% accuracy while running 100x faster.
+\begin{itemize}
+    \item \textbf{Bert-Base (110M params):} Good balance. Good for almost all production use-cases.
+    \item \textbf{Bert-Large (340M params):} Slightly better accuracy, much slower.
+    \item \textbf{DistilBERT (66M params):} 40\% smaller, 60\% faster, retains 97\% of BERT's performance.
+\end{itemize}
+\textbf{Best Practice:} Always start small! Scale up only if accuracy is insufficient.
+
+\section{3. Breaking API Rate Limits}
+If you use the free Inference API in a production loop, you will get blocked (Error 429).
+\begin{lstlisting}[language=Python]
+# BAD PRACTICE
+for text in million_sentences:
+    # This will get you temporarily banned!
+    requests.post(API_URL, json=text) 
+\end{lstlisting}
+\textbf{Solution:} 
+\begin{itemize}
+    \item Use local interference if you have hardware.
+    \item Pay for an "Inference Endpoint" (dedicated GPU).
+    \item Use \texttt{time.sleep()} between requests (slow).
+\end{itemize}
+
+\section{4. Not Checking the License}
+Just because a model is on the Hub doesn't mean it's open source for \textit{commercial} use. 
+\begin{itemize}
+    \item \textbf{Apache 2.0 / MIT:} Safe for almost anything.
+    \item \textbf{Llama Community License:} Has restrictions on user count (>700M users).
+    \item \textbf{Creative Commons Non-Commercial (CC-BY-NC):} You cannot sell a product using this.
+\end{itemize}
+\textbf{Always check the \texttt{LICENSE} file on the Model Card.}
+
+\section{5. Forgetting Tokenizer Padding}
+When processing batches of sentences, they must be the same length. If you don't pad them, your code will crash.
+\begin{lstlisting}[language=Python]
+# Correct way to handle batching
+tokenizer(sentences, padding=True, truncation=True)
+\end{lstlisting}
+This ensures all sequences are padded with zeros to match the longest sentence in the batch.

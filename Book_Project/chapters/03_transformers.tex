@@ -1,0 +1,75 @@
+\chapter{Transformers Made Easy}
+
+The **Transformer** architecture is the engine behind the modern AI revolution. But how does it work?
+
+\section{The Intuition: Attention Mechanism}
+Imagine you are at a loud cocktail party. There are hundreds of people talking at once. However, you can focus on just one person's voice regarding the conversation you are having, filtering out the background noise. This is "Attention."
+
+In NLP, when you translate a sentence, you don't just translate word-by-word; you look at the whole sentence to understand the context. 
+
+\begin{examplebox}{Context Matters}
+"I went to the \textbf{bank} to deposit money." \\
+"I sat on the river \textbf{bank}."
+\end{examplebox}
+
+In these sentences, the word "bank" has completely different meanings. Old models (like RNNs) struggled with this because they looked at words one by one. **Transformers look at all words at once** and pay "attention" to the relevant ones to understand the context. In the first sentence, the model pays attention to "deposit" and "money" to understand that "bank" refers to a financial institution.
+
+\section{Why Transformers replaced RNNs}
+\begin{itemize}
+    \item \textbf{Parallelism:} RNNs process words sequentially (Step 1, then Step 2). This is slow. Transformers process the whole sentence at once. This allows for massive parallelization on GPUs.
+    \item \textbf{Long-term Dependency:} RNNs forget the beginning of a long paragraph by the time they reach the end. Transformers "see" everything simultaneously, maintaining context over long distances.
+\end{itemize}
+
+\section{High-Level Architecture}
+Here is the simplified flow of data in a Transformer model.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        node distance=1.5cm,
+        auto,
+        block/.style={
+            rectangle, 
+            draw=hfblue, 
+            thick, 
+            fill=white,
+            text width=2.5cm, 
+            align=center, 
+            rounded corners, 
+            minimum height=1.2cm
+        },
+        arrow/.style={
+            ->, 
+            >=stealth, 
+            thick, 
+            color=darkgrey
+        }
+    ]
+        % Nodes
+        \node [block] (input) {Input Logic\\(Text)};
+        \node [block, right=of input] (tokenizer) {Tokenizer\\(Numbers)};
+        \node [block, right=of tokenizer, fill=hfpurple!10] (model) {Transformer Model\\(Processing)};
+        \node [block, right=of model] (output) {Output Head\\(Probabilities)};
+
+        % Edges
+        \draw [arrow] (input) -- (tokenizer);
+        \draw [arrow] (tokenizer) -- node[midway, above, font=\tiny] {IDs} (model);
+        \draw [arrow] (model) -- node[midway, above, font=\tiny] {Vectors} (output);
+    \end{tikzpicture}
+    \caption{How data flows through a Transformer model.}
+\end{figure}
+
+\begin{enumerate}
+    \item \textbf{Input:} Raw text.
+    \item \textbf{Tokenizer:} Converts text to numbers (Input IDs).
+    \item \textbf{Transformer:} Processes these numbers using layers of attention to create "Embeddings" (rich numerical representations of meaning).
+    \item \textbf{Output Head:} Converts the processed data into a final prediction (e.g., "Positive Sentiment" or the next word in a sentence).
+\end{enumerate}
+
+\section{Encoder vs. Decoder Models}
+Transformers come in three flavors:
+\begin{itemize}
+    \item \textbf{Encoder-only (e.g., BERT):} Great for "understanding" text. Used for classification, sentiment analysis, and answering questions.
+    \item \textbf{Decoder-only (e.g., GPT):} Great for "generating" text. Used for auto-complete and chatbots.
+    \item \textbf{Encoder-Decoder (e.g., T5, BART):} Good for tasks that strictly map Input $\rightarrow$ Output, like Translation or Summarization.
+\end{itemize}

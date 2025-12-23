@@ -1,0 +1,40 @@
+\chapter{The Hugging Face Ecosystem}
+
+Hugging Face is not just one library; it is a collection of tools designed to work together seamlessly.
+
+\section{The Core Libraries}
+
+\begin{description}
+    \item[\texttt{transformers}] The main library. It contains the model architectures (BERT, GPT, T5) and allows you to download pre-trained weights.
+    \item[\texttt{tokenizers}] A super-fast library (written in Rust) to convert text into numbers for the models.
+    \item[\texttt{datasets}] Provides easy access to thousands of datasets for training. It handles downloading, caching, and memory management efficiently.
+    \item[\texttt{accelerate}] A helper library to run your code on any hardware (CPU, GPU, TPU) without changing your code.
+    \item[\texttt{evaluate}] Tools to measure how good your model is (Accuracy, BLEU score, etc.).
+\end{description}
+
+\section{The Hub}
+The \href{https://huggingface.co/models}{Hugging Face Hub} is like the App Store for AI.
+\begin{itemize}
+    \item \textbf{Models:} Over 500,000 public models.
+    \item \textbf{Datasets:} Structured data for training.
+    \item \textbf{Spaces:} A place to host and showcase your ML demos.
+\end{itemize}
+
+\section{Spaces: Showcasing Your Work}
+You can deploy your model as a web app using **Gradio** or **Streamlit** directly on Hugging Face Spaces.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \node[fill=hfgrey, rounded corners, inner sep=10pt, draw=gray] {
+            \begin{tabular}{c}
+                \textbf{\large My Awesome Space} \\
+                \hline
+                Input Text: [ I love AI! ] \\
+                \textit{Processing...} \\
+                Output: \textbf{Positive (99\%)}
+            \end{tabular}
+        };
+    \end{tikzpicture}
+    \caption{A simple representation of a Gradio interface.}
+\end{figure}

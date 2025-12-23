@@ -1,0 +1,65 @@
+\documentclass[11pt, a4paper, openany]{book}
+\raggedbottom
+
+\usepackage{import}
+\input{styles/header}
+
+\begin{document}
+\let\cleardoublepage\clearpage
+
+% --- Front Matter ---
+\frontmatter
+
+% Custom Title Page
+\begin{titlepage}
+    \begin{tikzpicture}[remember picture, overlay]
+        % Background Color
+        \fill[hfblue] (current page.south west) rectangle (current page.north east);
+        
+        % Decorative Stripe
+        \fill[hfpurple] (current page.south west) -- (current page.north west) -- ([xshift=3cm]current page.north west) -- ([xshift=3cm]current page.south west) -- cycle;
+        
+        % Title Text
+        \node[anchor=north west, inner sep=0, text width=14cm] at ([xshift=4cm, yshift=-5cm]current page.north west) {
+            {\fontsize{50}{60}\selectfont \bfseries \color{white} The Hugging Face Guide} \\[1cm]
+            {\fontsize{20}{25}\selectfont \itshape \color{yellow!80!black} From Beginner to Intermediate: A Visual Approach}
+        };
+        
+        % Author Name
+        \node[anchor=south west, inner sep=0] at ([xshift=4cm, yshift=4cm]current page.south west) {
+            {\fontsize{18}{22}\selectfont \bfseries \color{white} Mausam Kar}
+        };
+
+        % Logo/Graphic Placeholder (TikZ Smiley)
+        \node[anchor=south east, opacity=0.3] at ([xshift=-1cm, yshift=1cm]current page.south east) {
+             \begin{tikzpicture}
+                \fill[white] (0,0) circle (2cm);
+                \fill[hfblue] (-0.7,0.5) circle (0.3cm); 
+                \fill[hfblue] (0.7,0.5) circle (0.3cm);
+                \draw[hfblue, line width=2mm] (-1,-0.5) arc (180:360:1cm);
+                \node at (0, -2.5) {\bfseries \Huge HF};
+            \end{tikzpicture}
+        };
+    \end{tikzpicture}
+\end{titlepage}
+
+\tableofcontents
+
+% --- Main Content ---
+\mainmatter
+
+% We will uncomment these as we create the files
+\input{chapters/01_introduction}
+\input{chapters/02_terminology}
+\input{chapters/03_transformers}
+\input{chapters/04_ecosystem}
+\input{chapters/05_installation}
+\input{chapters/06_local_usage}
+\input{chapters/07_api_usage}
+\input{chapters/08_hub}
+\input{chapters/09_projects}
+\input{chapters/10_cheatsheet}
+\input{chapters/11_mistakes}
+\input{chapters/12_roadmap}
+
+\end{document}

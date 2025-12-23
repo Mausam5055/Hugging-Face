@@ -1,0 +1,60 @@
+\chapter{Core AI Terminologies}
+
+To understand Hugging Face, we must first understand the hierarchy of AI concepts. Many beginners use terms like AI, ML, and DL interchangeably, but they have distinct meanings.
+
+\section{The AI Hierarchy}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        % Draw circles
+        \node[circle, draw=hfblue, minimum size=8cm, fill=hfblue!5, label={[yshift=-3.5cm]Artificial Intelligence (AI)}] (ai) at (0,0) {};
+        \node[circle, draw=hfpurple, minimum size=6cm, fill=hfpurple!10, label={[yshift=-2.5cm]Machine Learning (ML)}] (ml) at (0,0.5) {};
+        \node[circle, draw=orange, minimum size=4cm, fill=orange!10, label={[yshift=-1.5cm]Deep Learning (DL)}] (dl) at (0,1) {};
+        \node[circle, draw=green!60!black, minimum size=2cm, fill=green!10, label={[yshift=0cm]NLP}] (nlp) at (0,1.5) {};
+    \end{tikzpicture}
+    \caption{The relationship between AI, ML, Deep Learning, and NLP.}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{AI (Artificial Intelligence):} The broad conceptual umbrella. It refers to any technique that enables computers to mimic human intelligence, including logic, rules, and learning.
+    \item \textbf{ML (Machine Learning):} A subset of AI that uses specific algorithms to learn patterns from data (e.g., predicting house prices based on size and location) without being explicitly programmed for every rule.
+    \item \textbf{DL (Deep Learning):} A subset of ML inspired by the structure of the human brain (neural networks). It uses many layers of artificial neurons to solve complex problems like image recognition and language modeling.
+    \item \textbf{NLP (Natural Language Processing):} The field of AI focused on understanding, interpreting, and generating human language (text and speech).
+\end{itemize}
+
+\section{Tokens \& Tokenization}
+Computers don't understand text; they understand numbers. Tokenization is the process of breaking text into smaller chunks called \textit{tokens}.
+
+There are different ways to tokenize:
+\begin{itemize}
+    \item \textbf{Word-based:} Splitting by spaces. (e.g., "AI", "is", "cool"). Problem: Vocabulary becomes huge.
+    \item \textbf{Character-based:} Splitting by letters. (e.g., "A", "I"). Problem: Sequences become too long.
+    \item \textbf{Subword-based (Standard):} A balance. Common words are kept whole, rare words are split. (e.g., "tokenization" $\rightarrow$ "token", "\#\#ization").
+\end{itemize}
+
+\begin{examplebox}{Tokenization Example}
+    Input: "Hugging Face is acts cool!" \\
+    Tokens: ["Hugging", "Face", "is", "acts", "cool", "!"]
+\end{examplebox}
+
+Each token is then converted into a unique ID number, which is what the model actually processes.
+
+\section{Pre-trained Models vs. Fine-tuning}
+This is the most important concept in modern NLP: \textbf{Transfer Learning}.
+
+\begin{definitionbox}{Pre-trained Model (The Generalist)}
+A model that has been trained on a massive amount of data (like the whole internet, Wikipedia, Books) to learn general language patterns. It understands grammar, slang, and reasoning.
+\\ \textit{Analogy: A student who has graduated from high school with general knowledge.}
+\end{definitionbox}
+
+\begin{definitionbox}{Fine-tuning (The Specialist)}
+Taking a pre-trained model and training it further on a small, specific dataset (e.g., medical records, legal documents) to maximize performance for a specific task. 
+\\ \textit{Analogy: The high school graduate going to medical school to become a doctor.}
+\end{definitionbox}
+
+\section{Inference}
+Inference is simply the act of \textbf{using} the model to make a prediction on new data. When you type a prompt into ChatGPT and it replies, that is inference.
+
+\begin{warningbox}
+Training (especially pre-training) takes a massive amount of compute power (GPUs) and money. Inference (using) takes much less, often running on a single GPU or even a CPU.
+\end{warningbox}

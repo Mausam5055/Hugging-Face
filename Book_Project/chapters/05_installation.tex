@@ -1,0 +1,55 @@
+\chapter{Installation \& Setup}
+
+Setting up your environment correctly is the first step to success. This chapter will guide you through creating a professional development setup.
+
+\section{Prerequisites}
+You need Python installed on your system. We recommend Python 3.8 or higher. You can check your version by running:
+\begin{lstlisting}[language=bash]
+python --version
+\end{lstlisting}
+
+\section{Virtual Environments}
+It is highly recommended to use a virtual environment. Installing libraries globally can break your system tools or cause version conflicts.
+
+\begin{definitionbox}{Virtual Environment}
+A self-contained directory that contains a specific Python installation for a project. It isolates your project's dependencies from others.
+\end{definitionbox}
+
+\begin{lstlisting}[language=bash, caption=Creating a Virtual Environment]
+# 1. Open your terminal/command prompt
+
+# 2. Create environment named 'hf-env'
+python -m venv hf-env
+
+# 3. Activate it (Windows)
+hf-env\Scripts\activate
+
+# 3. Activate it (Mac/Linux)
+source hf-env/bin/activate
+\end{lstlisting}
+
+\section{Installing Libraries}
+Once your environment is active (you should see \texttt{(hf-env)} in your terminal), install the Hugging Face libraries using \texttt{pip}.
+
+\begin{lstlisting}[language=bash, caption=Installing Transformers and PyTorch]
+# Updates pip to the latest version
+pip install --upgrade pip
+
+# Install the core libraries
+pip install transformers datasets torch
+\end{lstlisting}
+
+\begin{tipbox}
+We install \texttt{torch} (PyTorch) because it is the most popular backend for Hugging Face. The library also works with TensorFlow (\texttt{tensorflow}) and JAX (\texttt{jax}).
+\end{tipbox}
+
+\section{Hardware Acceleration (Optional)}
+If you have an NVIDIA GPU, you should install the specific version of PyTorch that supports CUDA to speed up training by 10-50x.
+Visit \url{https://pytorch.org/get-started/locally/} to get the exact command for your hardware.
+
+\section{Where are models stored?}
+Hugging Face models can be several gigabytes in size. When you download a model, it is stored in your cache directory to avoid downloading it again.
+\begin{itemize}
+    \item \textbf{Default Location:} \texttt{\textasciitilde/.cache/huggingface/hub}
+\end{itemize}
+You can change this by setting the \texttt{HF\_HOME} environment variable if your C: drive runs out of space.

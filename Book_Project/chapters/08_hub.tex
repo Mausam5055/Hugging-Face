@@ -1,0 +1,73 @@
+\chapter{Downloading Models}
+
+\section{Understanding Model IDs}
+Every model on the Hub has a unique ID formatted as \texttt{username/model-name}.
+\begin{itemize}
+    \item \texttt{google-bert/bert-base-uncased} (Organization / Model)
+    \item \texttt{gpt2} (Official library models may not have a username)
+    \item \texttt{facebook/bart-large-cnn}
+\end{itemize}
+
+\section{How Caching Works}
+When you run \texttt{pipeline("sentiment-analysis")}, Hugging Face checks your local cache first.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        node distance=2cm,
+        auto,
+        process/.style={rectangle, draw=blue, fill=blue!10, rounded corners, minimum height=1cm, align=center},
+        decision/.style={diamond, draw=orange, fill=orange!10, aspect=2, align=center}
+    ]
+        \node[process] (start) {Request Model};
+        \node[decision, below of=start] (check) {Is it in Cache?};
+        \node[process, left of=check, node distance=4cm, fill=green!10] (load) {Load from Disk};
+        \node[process, right of=check, node distance=4cm, fill=red!10] (download) {Download from Hub};
+        \node[process, below of=load] (use) {Use Model};
+
+        \draw[->] (start) -- (check);
+        \draw[->] (check) -- node {Yes} (load);
+        \draw[->] (check) -- node {No} (download);
+        \draw[->] (download) |- (load);
+        \draw[->] (load) -- (use);
+        
+    \end{tikzpicture}
+    \caption{The Caching Mechanism}
+\end{figure}
+
+\section{Loading Specific Components}
+Instead of using \texttt{pipeline}, you can load the tokenizer and model separately for more control.
+
+\begin{lstlisting}[language=Python, caption=Manual Loading]
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+
+model_name = "distilbert-base-uncased-finetuned-sst-2-english"
+
+# 1. Load Tokenizer
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+# 2. Load Model
+model = AutoModelForSequenceClassification.from_pretrained(model_name)
+\end{lstlisting}
+
+\section{Model Cards}
+Every model on the Hub comes with a \textbf{Model Card}, which is a \texttt{README.md} file explaining:
+\begin{itemize}
+    \item \textbf{Model Description:} What the model does.
+    \item \textbf{Intended Use:} What limitations it has (e.g., "Do not use for medical advice").
+    \item \textbf{Training Data:} What data it was trained on.
+\end{itemize}
+\textbf{Best Practice:} Always read the Model Card before using a model in production!
+
+\section{Version Control \& Reproducibility}
+Hugging Face is built on top of \textbf{Git}. This means every change to a model is tracked. To ensure your code always uses the \textit{exact same version} of a model (even if the author updates it later), you can use the \texttt{revision} parameter.
+
+\begin{lstlisting}[language=Python, caption=Loading a Specific Commit]
+# Load a specific version of the model using the Commit Hash
+model = AutoModel.from_pretrained(
+    "bert-base-uncased", 
+    revision="a8041bf617dce44" 
+)
+\end{lstlisting}
+
+This guarantees that your application will behave exactly the same way in the future, protecting you from breaking changes.
