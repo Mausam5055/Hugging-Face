@@ -142,13 +142,14 @@ Here is how the magic happens inside the code (`src/` folder):
 
 We rely on a few powerful libraries to make this work. Here is what we installed and why:
 
-| Library             | What it does        | Why we need it                                                                                                                         |
-| :------------------ | :------------------ | :------------------------------------------------------------------------------------------------------------------------------------- |
-| **torch** (PyTorch) | The "Brain" 🧠      | It does all the heavy math needed for Deep Learning. Without it, the AI models can't run.                                              |
-| **transformers**    | The "Library" 📚    | Gives us access to thousands of pre-trained models (like NLLB and BART) from Hugging Face so we don't have to build them from scratch. |
-| **gradio**          | The "Face" 🖼️       | Builds the web interface (buttons, text boxes) with just a few lines of Python code.                                                   |
-| **sentencepiece**   | The "Translator" 🗣️ | Computers don't read words, they read numbers. This converts your text into numbers the model understands.                             |
-| **scipy**           | The "Calculator" 🧮 | A helper library for advanced math operations often needed by audio or text processing models.                                         |
+| Library             | What it does        | Why we need it                                                                                                                            |
+| :------------------ | :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| **torch** (PyTorch) | The "Brain" 🧠      | It does all the heavy math needed for Deep Learning. Without it, the AI models can't run.                                                 |
+| **transformers**    | The "Library" 📚    | Gives us access to thousands of pre-trained models (like NLLB and BART) from Hugging Face so we don't have to build them from scratch.    |
+| **gradio**          | The "Face" 🖼️       | Builds the web interface (buttons, text boxes) with just a few lines of Python code.                                                      |
+| **sentencepiece**   | The "Translator" 🗣️ | Computers don't read words, they read numbers. This converts your text into numbers the model understands.                                |
+| **scipy**           | The "Calculator" 🧮 | A helper library for advanced math operations often needed by audio or text processing models.                                            |
+| **tf-keras**        | The "Helper" 🤝     | A compatibility library that helps ensuring we can load certain models without errors, even if they were originally built for TensorFlow. |
 
 ### 3. Setup Guide
 
